@@ -1,0 +1,1907 @@
+<html>
+
+<head>
+
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1">
+
+    <h1 class="title">放置少女のガチャシミュレーター</h1>
+
+</head>
+
+<body>
+
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1">
+
+    <div style="background-color: aqua ">
+
+
+
+
+        <fieldset>
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <label for="select1" class="label">ガチャの種類</label>
+                <select id="select1" class="sel" onchange="select()">
+                    <option value="0">MR聖</option>
+                    <option value="1">MR</option>
+                    <option value="2">UR閃</option>
+                    <option value="3">UR</option>
+                    <option value="4">SSR</option>
+                    <option value="5">MRアバ</option>
+                    <option value="6">UR閃アバ</option>
+                    <option value="7">URアバ</option>
+                    <option value="8">奇麗多彩(UR閃)</option>
+                    <option value="9">奇麗多彩(MRアバ)</option>
+                    <option value="10">美少女学園</option>
+                    <option value="11">仮装の集い(SSR)</option>
+                    <option value="12">仮装の集い(URアバ)</option>
+                    <option value="13">仮装の集い(UR閃アバ)</option>
+                    <option value="14">ラキスタ</option>
+                </select>
+
+            </div>
+        </fieldset>
+
+        <fieldset id="f0">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+
+                <label for="kai" class="label">確定までの回数</label>
+                <input type="number" id="kai" class="list" min="1" max="10" value="10">
+                <label for="kizuna" class="label">　絆の個数</label>
+                <input type="number" id="kizuna" class="list" min="0" max="240" value="0">
+            </div>
+        </fieldset>
+
+        <fieldset id="f1">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <label for="gen" class="label">元宝</label>
+                <input type="number" id="gen" class="list" min="0" max="999999" value="0">
+                <label for="ken" class="label">　ガチャ券</label>
+                <input type="number" id="ken" class="list" min="0" max="999" value="0">
+            </div>
+        </fieldset>
+
+        <fieldset id="f2">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <label for="ken1" class="label">　割引券</label>
+                <input type="number" id="ken1" class="list" min="0" max="999" value="0" disabled>
+                <label for="ken2" class="label">　　幸運券</label>
+                <input type="number" id="ken2" class="list" min="0" max="999" value="0" disabled>
+            </div>
+        </fieldset>
+
+
+
+        <fieldset id="f4">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <label for="bafu2" class="label">　2倍バフの確率%</label>
+                <input type="number" id="bafu2" value="15" class="list" disabled>
+                <label for="bafu5" class="label">　5倍バフの確率%</label>
+                <input type="number" id="bafu5" value="2" class="list" disabled>
+            </div>
+        </fieldset>
+
+
+
+    </div>
+
+    <div style="margin-top: 1rem;margin-bottom: 1rem;display: flex;justify-content: space-around;">
+        <input type="button" value="ガチャ開始" class="st_bo" id="st_bo" onclick="start()">
+
+    </div>
+
+    <div class="pane" id="pane">
+
+        <div class="fil" id="maind" hidden>
+
+            <div class="div_genmizu">
+                <label>ガチャ券<input type="number" value="0" class="dis_mizu" id="dis_mizu" disabled></label>
+                <label>元宝<input type="number" value="0" class="dis_gen" id="dis_gen" disabled></label>
+
+            </div>
+
+            <div class="m2" id="m2d">
+                <label for="gacya_me" class="gacya_me_la">ガチャ券ボーナス</label>
+                <meter min="0" max="10000" class="gacya_me" id="gacya_me"></meter>
+                <label class="gacya_me_la2" id="dis_m2">0/10000</label>
+            </div>
+
+
+            <div class="aida">
+
+
+                <table cellpadding="1rem" style="margin: auto;text-align: center;">
+                    <tr>
+                        <td><input type="button" class="gacya_re" id="g1"></td>
+                        <td><input type="button" class="gacya_re" id="g2"></td>
+                        <td><input type="button" class="gacya_re" id="g3"></td>
+                        <td><input type="button" class="gacya_re" id="g4"></td>
+                        <td><input type="button" class="gacya_re" id="g5"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="button" class="gacya_re" id="g6"></td>
+                        <td><input type="button" class="gacya_re" id="g7"></td>
+                        <td><input type="button" class="gacya_re" id="g8"></td>
+                        <td><input type="button" class="gacya_re" id="g9"></td>
+                        <td><input type="button" class="gacya_re" id="g10"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="bafud">
+                <label class="bafu_bun" id="dis_bafu"></label>
+            </div>
+
+            <div class="ken" id="ken12d">
+
+                <div>
+                    <input type="checkbox" class="dis_ken" id="ch_ken1" onchange="ken1_bun()">
+                    <label class="kenn" id="dis_ken1">割引券×0</label>
+                </div>
+                <div>
+                    <input type="checkbox" class="dis_ken" id="ch_ken2" onchange="ken2_bun()">
+                    <label class="kenn" id="dis_ken2">幸運券×0</label>
+                </div>
+            </div>
+
+            <div class="kaiki">
+                <p class="kaip1" id="dis_kai">10回後、確定絆×5</p>
+                <p class="kaip2" id="dis_kizu">0/240</p>
+            </div>
+
+
+            <div class="dmeter">
+                <meter min="0" max="240" class="meter" id="meter"></meter>
+            </div>
+
+            <div class="kenon">
+                <label>ガチャ券を使う<input type="checkbox" class="kenon_ch" id="ch_ken" onchange="ken_ch()"></label>
+            </div>
+
+            <div class="ga">
+                <input type="button" value="1回引く&#13;&#10;300元宝" class="ga_bo" id="ga_one" onclick="main2(1)">
+                <input type="button" value="10回引く&#13;&#10;2980元宝" class="ga_bo" id="ga_ten" onclick="main2(10)">
+            </div>
+
+        </div>
+
+        <div class="datad" id="dataj" hidden>
+            <p>詳細データ</p>
+            <p>
+
+            </p>
+
+            <div>
+                <label>ガチャを回した回数</label>
+                <label class="data_gen" id="data_kai">0</label>
+            </div>
+            <div>
+                <label>消費元宝</label>
+                <label class="data_gen" id="data_gen">0</label>
+            </div>
+            <div>
+                <label>消費ガチャ券</label>
+                <label class="data_gen" id="data_ken">0</label>
+            </div>
+            <div>
+                <label>消費割引券</label>
+                <label class="data_gen" id="data_ken1">0</label>
+            </div>
+            <div>
+                <label>消費幸運券</label>
+                <label class="data_gen" id="data_ken2">0</label>
+            </div>
+            <div><label>----------</label></div>
+            <div>
+                <label>2倍バフの回数</label>
+                <label class="data_gen" id="b2k">0</label>
+            </div>
+            <div>
+                <label>5倍バフの回数</label>
+                <label class="data_gen" id="b5k">0</label>
+            </div>
+            <div>
+                <label>2倍バフが野良絆にのった回数</label>
+                <label class="data_gen" id="b22">0</label>
+            </div>
+            <div>
+                <label>5倍バフが野良絆にのった回数</label>
+                <label class="data_gen" id="b25">0</label>
+            </div>
+            <div>
+                <label>2倍バフが確定絆にのった回数</label>
+                <label class="data_gen" id="b52">0</label>
+            </div>
+            <div>
+                <label>5倍バフが確定絆にのった回数</label>
+                <label class="data_gen" id="b55">0</label>
+            </div>
+            <div><label>----------</label></div>
+            <div>
+                <label>紅翡翠</label>
+                <label class="data_gen" id="data_beni">0</label>
+            </div>
+            <div>
+                <label>副将訓練4</label>
+                <label class="data_gen" id="data_kun4">0</label>
+            </div>
+            <div>
+                <label>副将訓練3</label>
+                <label class="data_gen" id="data_kun3">0</label>
+            </div>
+            <div>
+                <label>強化石</label>
+                <label class="data_gen" id="data_kyou">0</label>
+            </div>
+            <div>
+                <label>宝石券</label>
+                <label class="data_gen" id="data_hou">0</label>
+            </div>
+            <div>
+                <label>ボス券</label>
+                <label class="data_gen" id="data_bosu">0</label>
+            </div>
+            <div>
+                <label>訓練券</label>
+                <label class="data_gen" id="data_kun">0</label>
+            </div>
+            <div>
+                <label>割引券</label>
+                <label class="data_gen" id="data_wari">0</label>
+            </div>
+            <div>
+                <label>幸運券</label>
+                <label class="data_gen" id="data_kou">0</label>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+    <div style="margin-top: 1rem;margin-bottom: 1rem;display: flex;justify-content: space-around;">
+        <input type="button" value="設定を初期化" class="syoki" id="syb" onclick="syokika()" hidden>
+        <input type="button" value="もう一度" class="syoki" id="mou" onclick="reset()" hidden>
+
+    </div>
+
+    <script>
+
+    </script>
+
+
+</body>
+
+
+<style>
+    .datad {
+        display: flexbox;
+        height: 37rem;
+        width: 26rem;
+        background-color: rgb(182, 208, 255);
+        margin: auto;
+
+
+    }
+
+    .pane {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin: 1rem, 0rem;
+    }
+
+    .title {
+        font-size: 3rem;
+    }
+
+    .label {
+        font-size: 1rem;
+    }
+
+    .list {
+        display: flex;
+        text-align: right;
+        height: 1.5rem;
+        width: 8rem;
+    }
+
+    .fil {
+        display: flexbox;
+        height: 32rem;
+        width: 26rem;
+        background-color: lightpink;
+        margin: auto;
+
+    }
+
+    .div_genmizu {
+        text-align: right;
+
+        height: 4rem;
+        width: 26rem;
+
+    }
+
+    .dis_mizu {
+        width: 7rem;
+        height: 2rem;
+        justify-content: right;
+        text-align: right;
+        font-size: 1.5rem;
+        margin-top: 1rem;
+
+    }
+
+    .dis_gen {
+        width: 7rem;
+        height: 2rem;
+        justify-content: right;
+        text-align: right;
+        font-size: 1.5rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+
+    .aida {
+        height: 11rem;
+        width: 26rem;
+
+        display: flex;
+    }
+
+    .ken {
+        height: 3rem;
+        width: 26rem;
+
+        text-align: right;
+
+
+
+    }
+
+    .dmeter {
+        height: 2rem;
+        width: 26rem;
+
+        display: flex;
+        text-align: center;
+
+    }
+
+    .ga {
+        height: 4rem;
+        width: 26rem;
+
+        margin: auto;
+        text-align: center;
+
+        justify-content: space-around;
+    }
+
+
+    .syoki {
+        height: 5rem;
+        width: 18rem;
+        font-size: 2rem;
+    }
+
+    .kenon {
+        height: 2rem;
+        width: 26rem;
+
+        text-align: center;
+        margin: auto;
+    }
+
+    .meter {
+        width: 24rem;
+        height: 2rem;
+        margin: auto;
+
+    }
+
+    .kaiki {
+        height: 2rem;
+        width: 26rem;
+
+        text-align: center;
+        display: inline-block;
+    }
+
+    .ga_bo {
+        text-align: center;
+        height: 3rem;
+        width: 7rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+
+    }
+
+    .kenon_ch {
+        margin-top: 0.5rem;
+    }
+
+    .kaip1 {
+        display: inline;
+        font-size: 1.2rem;
+        margin-right: 3rem;
+    }
+
+    .kaip2 {
+        display: inline;
+        font-size: 1.2rem;
+        margin-left: 4rem;
+        margin-right: 3rem;
+        color: rgb(255, 0, 0);
+    }
+
+    .m2 {
+        height: 2rem;
+        width: 26rem;
+        text-align: center;
+    }
+
+    .gacya_me {
+        width: 5rem;
+    }
+
+    .gacya_me_la {
+        margin-left: 5rem;
+    }
+
+    .kenn {
+        margin-right: 1rem;
+    }
+
+    .dis_ken {
+        text-align: center;
+    }
+
+    .gacya_re {
+        height: 4.5rem;
+        width: 4.5rem;
+    }
+
+
+
+    .bafud {
+        height: 2rem;
+        width: 26rem;
+        text-align: center;
+    }
+
+    .syu_bun {
+        font-size: 1.5rem;
+    }
+
+    .bafu_bun {
+        font-size: 1.5rem;
+    }
+
+    .st_bo {
+        height: 5rem;
+        width: 20rem;
+        font-size: 2rem;
+    }
+
+    @media screen and (max-width:480px) {
+
+
+        .pane {
+            margin: auto;
+            text-align: center;
+            display: block;
+
+        }
+
+        .title {
+            font-size: 1.5rem;
+        }
+
+        .label {
+            font-size: 0.6rem;
+        }
+
+        .sel {
+            height: 1.1rem;
+            width: 3.5rem;
+            text-align: right;
+        }
+
+        .list {
+            display: flex;
+            text-align: right;
+            height: 1.1rem;
+            width: 3.5rem;
+        }
+
+        .fil {
+            display: flexbox;
+            height: 25rem;
+            width: 20rem;
+            background-color: lightpink;
+            margin: auto;
+        }
+
+        .datad {
+            display: flexbox;
+            height: 36rem;
+            width: 20rem;
+            background-color: rgb(182, 208, 255);
+            margin: auto;
+
+
+        }
+
+        .div_genmizu {
+            text-align: right;
+
+            height: 2.2rem;
+            width: 20rem;
+
+        }
+
+        .dis_mizu {
+            width: 3rem;
+            height: 1.5rem;
+            justify-content: right;
+            text-align: right;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+
+        }
+
+        .dis_gen {
+            width: 4rem;
+            height: 1.5rem;
+            justify-content: right;
+            text-align: right;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        .aida {
+            height: 7rem;
+            width: 20rem;
+
+            display: flex;
+        }
+
+        .ken {
+            height: 2.7rem;
+            width: 20rem;
+            font-size: 0.7rem;
+            text-align: right;
+
+
+
+        }
+
+        .dmeter {
+            height: 2rem;
+            width: 20rem;
+
+            display: flex;
+            text-align: center;
+
+        }
+
+        .ga {
+            height: 3.5rem;
+            width: 20rem;
+
+            margin: auto;
+            text-align: center;
+            display: inline-block;
+            justify-content: space-around;
+        }
+
+
+        .syoki {
+            height: 5rem;
+            width: 18rem;
+            font-size: 2rem;
+        }
+
+        .kenon {
+            height: 1.7rem;
+            width: 20rem;
+
+            text-align: center;
+            margin: auto;
+        }
+
+        .meter {
+            width: 18rem;
+            height: 2rem;
+            margin: auto;
+
+        }
+
+        .kaiki {
+            height: 1.5rem;
+            width: 20rem;
+
+            text-align: center;
+            display: inline-block;
+        }
+
+        .ga_bo {
+            text-align: center;
+            height: 2.5rem;
+            width: 6rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+
+        }
+
+        .kenon_ch {
+            margin-top: 0.5rem;
+        }
+
+        .kaip1 {
+            display: inline;
+            font-size: 1rem;
+            margin-right: 1rem;
+        }
+
+        .kaip2 {
+            display: inline;
+            font-size: 1rem;
+            margin-left: 3rem;
+            margin-right: 1rem;
+            color: rgb(255, 0, 0);
+        }
+
+        .m2 {
+            height: 1.8rem;
+            width: 20rem;
+            text-align: center;
+        }
+
+        .gacya_me {
+            width: 3rem;
+        }
+
+        .gacya_me_la {
+            margin-left: 5rem;
+            font-size: 0.6rem;
+        }
+
+        .kenn {
+            margin-right: 1rem;
+        }
+
+        .dis_ken {
+            text-align: center;
+
+        }
+
+        .gacya_re {
+            height: 3rem;
+            width: 3rem;
+            font-size: 0.6rem
+        }
+
+
+
+        .bafud {
+            height: 1.5rem;
+            width: 20rem;
+            text-align: center;
+        }
+
+        .syu_bun {
+            font-size: 1rem;
+        }
+
+        .bafu_bun {
+            font-size: 0.8rem;
+        }
+
+        .gacya_me_la2 {
+            font-size: 0.6rem;
+        }
+
+        .st_bo {
+            height: 3rem;
+            width: 10rem;
+            font-size: 1.5rem;
+        }
+
+        .syoki {
+            height: 3rem;
+            width: 8rem;
+            font-size: 1.2rem;
+        }
+
+
+    }
+</style>
+
+<script>
+    /////////////ssr野良絆は4/////////////////////
+
+    //ちな、学園は確定が6
+
+    var ssr = false
+
+    var gen = 0
+    var ken1 = 0
+    var ken2 = 0
+    var kizu = 0
+    var kai = 0
+    var ken = 0
+    var kizu_max = 0
+
+    var type = 0
+    var type2 = 0
+    var f_gen = 0
+    var f_ken1 = 0
+    var f_ken2 = 0
+    var f_kai = 0
+    var f_ken = 0
+    var f_kizu = 0
+
+    var dis_gen
+    var dis_ken
+    var dis_me2
+    var dis_me2_la
+    var dis_bafu
+    var dis_ken1
+    var dis_ken2
+    var dis_kai
+    var dis_kizu
+    var dis_me
+
+    var ch_ken
+    var ch_ken1
+    var ch_ken2
+
+    var ga_one
+    var ga_ten
+
+    var _gen = 0
+    var _ken = 0
+    var _ken1 = 0
+    var _ken2 = 0
+    var _kizu = 0
+    var _kai = 0
+
+    var rand = 0
+    var bafu = 1
+    var gp = 0
+    var gstr
+    var bo_max = 0
+    var i = 0
+    var endg = false
+    var bafuon
+    var gt
+    var bt
+
+    var b2k = 0
+    var b5k = 0
+    var b22 = 0
+    var b25 = 0
+    var b52 = 0
+    var b55 = 0
+
+    var kun3 = 0
+    var kun4 = 0
+    var beni = 0
+    var wari = 0
+    var kou = 0
+    var hou = 0
+    var kyou = 0
+    var bosu = 0
+    var kun = 0
+
+    type = document.getElementById("select1")
+    f_gen = document.getElementById("gen")
+    f_kai = document.getElementById("kai")
+    f_ken = document.getElementById("ken")
+    f_ken1 = document.getElementById("ken1")
+    f_ken2 = document.getElementById("ken2")
+    f_kizu = document.getElementById("kizuna")
+
+    //ディスプレイの値を短く
+    dis_gen = document.getElementById("dis_gen")
+    dis_ken = document.getElementById("dis_mizu")
+    dis_me2 = document.getElementById("gacya_me")
+    dis_me2_la = document.getElementById("dis_m2")
+    dis_bafu = document.getElementById("dis_bafu")
+    dis_ken1 = document.getElementById("dis_ken1")
+    dis_ken2 = document.getElementById("dis_ken2")
+    dis_kai = document.getElementById("dis_kai")
+    dis_kizu = document.getElementById("dis_kizu")
+    dis_me = document.getElementById("meter")
+
+    //チェックボックス短く
+    ch_ken = document.getElementById("ch_ken")
+    ch_ken1 = document.getElementById("ch_ken1")
+    ch_ken2 = document.getElementById("ch_ken2")
+
+    ga_one = document.getElementById("ga_one")
+    ga_ten = document.getElementById("ga_ten")
+
+    //初期化ボタン
+    function syokika() {
+        window.location.reload(true);
+    }
+
+    //絆の変更適用
+    function kizu_bun(pura, max) {
+        dis_kizu.innerHTML = pura + "/" + max
+    }
+
+
+
+    //ボーナス
+    function bona_bun(b1, b2) {
+
+        dis_me2.max = b2
+
+        if (bt == 0) {
+            if (b1 >= b2) {
+                if (b2 == 10000) {
+                    bo_max = 20000
+                    dis_me2.min = 10000
+                    dis_me2.max = 20000
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 20000
+                    ken = 5 + ken / 1
+                    dis_ken.value = 5 + dis_ken.value / 1
+                }
+                else if (b2 == 20000) {
+                    bo_max = 30000
+                    dis_me2.min = 20000
+                    dis_me2.max = 30000
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 30000
+                    ken = 5 + ken / 1
+                    dis_ken.value = 5 + dis_ken.value / 1
+                }
+                else if (b2 == 30000) {
+                    bo_max = 50000
+                    dis_me2.min = 30000
+                    dis_me2.max = 50000
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 50000
+                    ken = 10 + ken / 1
+                    dis_ken.value = 10 + dis_ken.value / 1
+                }
+                else if (b2 == 50000) {
+                    bo_max = 70000
+                    dis_me2.min = 50000
+                    dis_me2.max = 70000
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 70000
+                    ken = 10 + ken / 1
+                    dis_ken.value = 10 + dis_ken.value / 1
+                }
+                else if (b2 == 70000) {
+                    bo_max = 999999
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = ""
+                    ken = 20 + ken / 1
+                    dis_ken.value = 20 + dis_ken.value / 1
+                }
+            }
+            else {
+
+                if (bo_max == 999999) {
+                    dis_me2_la.innerHTML = ""
+                }
+
+                else {
+                    dis_me2_la.innerHTML = b1 + "/" + b2
+                    dis_me2.value = b1
+                }
+
+            }
+        }
+
+        else if (bt == 1) {
+            if (b1 >= b2) {
+                if (b2 == 15) {
+                    bo_max = 50
+                    dis_me2.min = 15
+                    dis_me2.max = 50
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 50
+                    ken = 2 + ken / 1
+                    dis_ken.value = 2 + dis_ken.value / 1
+
+                }
+                else if (b2 == 50) {
+                    bo_max = 100
+                    dis_me2.min = 50
+                    dis_me2.max = 100
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 100
+                    ken = 3 + ken / 1
+                    dis_ken.value = 3 + dis_ken.value / 1
+
+                }
+                else if (b2 == 100) {
+                    bo_max = 200
+                    dis_me2.min = 100
+                    dis_me2.max = 200
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 200
+                    ken = 5 + ken / 1
+                    dis_ken.value = 5 + dis_ken.value / 1
+
+                }
+                else if (b2 == 200) {
+                    bo_max = 300
+                    dis_me2.min = 200
+                    dis_me2.max = 300
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 300
+                    ken = 10 + ken / 1
+                    dis_ken.value = 10 + dis_ken.value / 1
+
+                }
+                else if (b2 == 300) {
+                    bo_max = 400
+                    dis_me2.min = 300
+                    dis_me2.max = 400
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = b1 + "/" + 140
+                    ken = 30 + ken / 1
+                    dis_ken.value = 30 + dis_ken.value / 1
+
+                }
+                else if (b2 == 400) {
+                    bo_max = 999999
+                    dis_me2.value = b1
+                    dis_me2_la.innerHTML = ""
+                    ken = 40 + ken / 1
+                    dis_ken.value = 40 + dis_ken.value / 1
+                }
+            }
+            else {
+
+                if (bo_max == 999999) {
+                    dis_me2.innerHTML = ""
+                }
+
+                else {
+                    dis_me2_la.innerHTML = b1 + "/" + b2
+                    dis_me2.value = b1
+                }
+
+            }
+        }
+
+
+    }
+
+    //残り回数の変更適用
+    function kai_bun(ka, baf) {
+
+        if (baf == 0) {
+            dis_kai.innerHTML = ka + "回後、確定絆×" + 5
+        }
+
+        else if (baf == 2) {
+            dis_kai.innerHTML = ka + "回後、確定絆×" + 10
+        }
+
+        if (ch_ken2.checked == true) {
+            dis_kai.innerHTML = ka + "回後、確定絆×" + 10
+        }
+
+    }
+
+    //割引幸運券の変更適用
+    function ken_bun(syu, kazu) {
+
+        if (syu == 1) {
+            dis_ken1.innerHTML = "割引券×" + kazu
+        }
+        else if (syu == 2) {
+            dis_ken2.innerHTML = "幸運券×" + kazu
+        }
+
+    }
+
+    function start2(s_kizu_max, s_bo, s_bt, s_bo_max, s_ba, s_ssr, s_gt) {
+
+        kizu_bun(f_kizu.value, s_kizu_max)
+        kizu_max = s_kizu_max
+        dis_me.max = s_kizu_max
+
+        if (s_bo) {
+            bo_max = s_bo_max
+            bona_bun(0, s_bo_max)
+            document.getElementById("m2d").hidden = false
+        }
+
+        else {
+            document.getElementById("m2d").hidden = true
+        }
+
+        if (s_ba) {
+            bafuon = true
+            document.getElementById("ken12d").hidden = true
+        }
+        else {
+            document.getElementById("ken12d").hidden = false
+            ken_bun(1, f_ken1.value)
+            ken_bun(2, f_ken2.value)
+            ken1 = f_ken1.value
+            ken2 = f_ken2.value
+        }
+
+        if (s_ssr) {
+            ssr = true
+        }
+
+        gt = s_gt
+        bt = s_bt
+    }
+
+    //スタート時
+    function start() {
+
+        document.getElementById("st_bo").hidden = true
+
+        //formの編集をオフ 
+        type.disabled = true
+        type2.disabled = true
+        f_ken.disabled = true
+        f_ken1.disabled = true;
+        f_ken2.disabled = true;
+        f_gen.disabled = true;
+        f_kai.disabled = true;
+        f_kizu.disabled = true;
+
+        //ディスプレイに反映１(元宝、残り回数、ガチャ券)
+        dis_gen.value = f_gen.value
+        kai_bun(f_kai.value, 0)
+        dis_ken.value = f_ken.value
+        dis_me.value = f_kizu.value
+
+        //ディスプレイに反映２(ガチャ券、絆、、)
+        //MRsei
+        if (type.value == 0) {
+            start2(240, true, 0, 10000, true, false, 0)
+        }
+
+        //MR
+        else if (type.value == 1) {
+            start2(200, false, -1, 0, true, false, 0)
+        }
+
+        //nizi
+        else if (type.value == 2 || type.value == 8) {
+            start2(180, true, 1, 15, false, false, 1)
+        }
+
+        else if (type.value == 3 || type.value == 5 || type.value == 6 || type.value == 9) {
+            start2(120, true, 1, 15, false, false, 1)
+        }
+
+        else if (type.value == 4) {
+            start2(120, true, 1, 15, false, true, 1)
+        }
+
+        else if (type.value == 6) {
+            start2(60, true, 1, 15, false, false, 1)
+        }
+
+        else if (type.value == 10) {
+            start2(180, false, -1, 0, true, false, 2)
+        }
+
+        else if (type.value == 11) {
+            start2(120, false, -1, 0, false, true, 3)
+        }
+
+        else if (type.value == 12) {
+            start2(60, false, -1, 0, false, false, 3)
+        }
+
+        else if (type.value == 13) {
+            start2(120, false, -1, 0, false, false, 3)
+        }
+
+        else if (type.value == 14) {
+            start2(120, false, -1, 0, true, false, 2)
+        }
+
+        //内部処理用の変数
+        gen = f_gen.value
+        kai = f_kai.value
+        kizu = f_kizu.value
+        ken = f_ken.value
+
+        //ディスプレイ表示
+        document.getElementById("maind").hidden = false
+        document.getElementById("syb").hidden = false
+        document.getElementById("mou").hidden = false
+
+        //元宝の数によって
+        if (gen < 300) {
+            ga_one.disabled = true
+            ga_ten.disabled = true
+        }
+
+        else if (gen < 2980) {
+            ga_ten.disabled = true
+        }
+
+    }
+
+    //セレクト時の処理
+    function select() {
+
+        if (type.value == 0 || type.value == 1 || type.value == 10 || type.value == 14) {
+
+            f_ken1.disabled = true;
+            f_ken2.disabled = true;
+        }
+
+        else {
+            f_ken1.disabled = false;
+            f_ken2.disabled = false;
+        }
+    }
+
+    //kenがチェックされたとき 及び　回せるかの確認
+    function ken_ch() {
+
+        if (endg == true) {
+            ga_one.disabled = true
+            ga_ten.disabled = true
+        }
+
+        else {
+
+            if (ch_ken.checked == true) {
+                ga_one.value = "1回引く\nガチャ券×1"
+                ga_ten.value = "10回引く\nガチャ券×10"
+                ga_one.disabled = false
+                ga_ten.disabled = false
+
+                if (ken == 0) {
+                    ga_one.disabled = true
+                    ga_ten.disabled = true
+                }
+                else if (ken < 10) {
+                    ga_ten.disabled = true
+                }
+            }
+            else {
+                ga_one.value = "1回引く\n300元宝"
+                ga_ten.value = "10回引く\n2980元宝"
+                ga_one.disabled = false
+                ga_ten.disabled = false
+
+                if (ch_ken1.checked == false) {
+
+                    if (gen < 300) {
+                        ga_one.disabled = true
+                        ga_ten.disabled = true
+                    }
+
+                    else if (gen < 2980) {
+                        ga_ten.disabled = true
+                    }
+
+                }
+
+                else {
+
+                    ga_one.value = "1回引く\n240元宝"
+                    ga_ten.value = "10回引く\n2384元宝"
+
+                    if (gen < 240) {
+                        ga_one.disabled = true
+                        ga_ten.disabled = true
+                    }
+
+                    else if (gen < 2384) {
+                        ga_ten.disabled = true
+                    }
+
+                }
+
+            }
+        }
+    }
+
+    //main
+    function main() {
+
+        //  bafu = 1
+
+        if (gp == 10) {
+            gp = 1
+            document.getElementById("g1").value = ""
+            document.getElementById("g2").value = ""
+            document.getElementById("g3").value = ""
+            document.getElementById("g4").value = ""
+            document.getElementById("g5").value = ""
+            document.getElementById("g6").value = ""
+            document.getElementById("g7").value = ""
+            document.getElementById("g8").value = ""
+            document.getElementById("g9").value = ""
+            document.getElementById("g10").value = ""
+        }
+
+        else {
+            gp += 1
+        }
+
+        gstr = "g" + gp
+
+        dis_bafu.innerHTML = ""
+
+
+        if (gt == 0) {
+            type01g()
+        }
+
+        else if (gt == 1) {
+            type2g()
+        }
+
+        else if (gt == 2) {
+            type35g()
+        }
+        else if (gt == 3) {
+            type4g()
+        }
+
+        //////元宝、券を減らす
+        if (ch_ken.checked == true) {
+            ken = ken / 1 - 1
+            _ken += 1
+            dis_ken.value -= 1
+            ken_ch()
+
+        }
+        else {
+
+            if (ch_ken1.checked == true) {
+                gen = gen / 1 - 240
+                _gen += 240
+                dis_gen.value -= 240
+            }
+            else {
+                gen = gen / 1 - 300
+                _gen += 300
+                dis_gen.value -= 300
+
+            }
+            ken_ch()
+        }
+
+        //ガチャ回した回数
+        _kai += 1
+
+        //ボーナス
+        if (bt == 0) {
+            bona_bun(_gen, bo_max)
+        }
+        else if (bt == 1) {
+            bona_bun(_kai, bo_max)
+        }
+
+        /////////バフかけ
+        if (bafuon) {
+
+            rand = Math.floor(Math.random() * 100)
+
+            bafu = 1
+
+            if (rand <= 1) {
+                bafu = 5
+                b5k += 1
+                dis_bafu.innerHTML = "5倍ラッキーバフ発動!"
+            }
+
+            else if (rand <= 16) {
+                bafu = 2
+                b2k += 1
+                dis_bafu.innerHTML = "2倍ラッキーバフ発動!"
+            }
+        }
+
+        //残り回数の処理
+        kai -= 1
+        kai_bun(kai, 0)
+
+        //絆が超えたかどうか
+        if (kizu >= kizu_max) {
+            endg = true
+            end()
+            document.getElementById("dataj").hidden = false
+            ga_one.disabled = true
+            ga_ten.disabled = true
+
+        }
+
+    }
+
+    function end() {
+        document.getElementById("data_gen").innerHTML = _gen
+        document.getElementById("data_kai").innerHTML = _kai
+        document.getElementById("data_ken").innerHTML = _ken
+        document.getElementById("data_ken1").innerHTML = _ken1
+        document.getElementById("data_ken2").innerHTML = _ken2
+        document.getElementById("b2k").innerHTML = b2k
+        document.getElementById("b5k").innerHTML = b5k
+        document.getElementById("b22").innerHTML = b22
+        document.getElementById("b25").innerHTML = b25
+        document.getElementById("b52").innerHTML = b52
+        document.getElementById("b55").innerHTML = b55
+        document.getElementById("data_beni").innerHTML = beni
+        document.getElementById("data_wari").innerHTML = wari
+        document.getElementById("data_kou").innerHTML = kou
+        document.getElementById("data_kun").innerHTML = kun
+        document.getElementById("data_kun3").innerHTML = kun3
+        document.getElementById("data_kun4").innerHTML = kun4
+        document.getElementById("data_hou").innerHTML = hou
+        document.getElementById("data_kyou").innerHTML = kyou
+        document.getElementById("data_bosu").innerHTML = bosu
+
+    }
+
+    //1回か１０回か
+    function main2(gakai) {
+
+        if (gakai == 1) {
+
+            main()
+
+            if (ch_ken1.checked == true) {
+                ken1 -= 1
+                _ken1 += 1
+                ken_bun(1, ken1)
+                if (ken1 == 0) {
+                    ch_ken1.checked = false
+                    ch_ken1.disabled = true
+                }
+            }
+
+        }
+
+        else if (gakai == 10) {
+
+            gp = 10
+
+            for (i = 0; i < 10; i++) {
+                main()
+            }
+            if (ch_ken1.checked == true) {
+                ken1 -= 1
+                _ken1 += 1
+                ken_bun(1, ken1)
+                if (ken1 == 0) {
+                    ch_ken1.checked = false
+                    ch_ken1.disabled = true
+                }
+                gen = 16 + gen / 1
+                _gen -= 16
+                dis_gen.value = 16 + dis_gen.value / 1
+            }
+            else {
+
+                if (ch_ken.checked == false) {
+                    gen = 20 + gen / 1
+                    _gen -= 20
+                    dis_gen.value = 20 + dis_gen.value / 1
+                }
+
+
+            }
+        }
+    }
+
+    //M
+    function type01g() {
+
+        if (kai == 1) {
+            document.getElementById(gstr).value = "絆\n×" + 5 * bafu
+            kizu = 5 * bafu + kizu / 1
+            dis_me.value = kizu
+            kizu_bun(kizu, kizu_max)
+            kai = 11
+
+            if (bafu == 2) {
+                b52 += 1
+            }
+            else if (bafu == 5) {
+                b55 += 1
+            }
+        }
+
+        else {
+            rand = Math.floor(Math.random() * 100)
+
+            if (rand <= 7) {
+                document.getElementById(gstr).value = "絆\n×" + 2 * bafu
+                kizu = 2 * bafu + kizu / 1
+                dis_me.value = kizu
+                kizu_bun(kizu, kizu_max)
+
+                if (bafu == 2) {
+                    b22 += 1
+                }
+                else if (bafu == 5) {
+                    b25 += 1
+                }
+            }
+
+            else if (rand <= 17) {
+                document.getElementById(gstr).value = "紅翡翠\n×" + 1 * bafu
+                beni += 1 * bafu
+            }
+
+            else if (rand <= 32) {
+                document.getElementById(gstr).value = "副訓練4\n×" + 1 * bafu
+                kun4 += 1 * bafu
+            }
+
+            else if (rand <= 52) {
+                document.getElementById(gstr).value = "副訓練3\n×" + 3 * bafu
+                kun3 += 3 * bafu
+            }
+
+            else if (rand <= 72) {
+                document.getElementById(gstr).value = "強化石\n×" + 100 * bafu
+                kyou += 100 * bafu
+            }
+
+            else if (rand <= 87) {
+                document.getElementById(gstr).value = "宝石券\n×" + 20 * bafu
+                hou += 20 * bafu
+            }
+
+            else if (rand <= 93) {
+                document.getElementById(gstr).value = "ボス券\n×" + 2 * bafu
+                bosu += 2 * bafu
+            }
+
+            else if (rand <= 99) {
+                document.getElementById(gstr).value = "訓練券\n×" + 2 * bafu
+                kun += 2 * bafu
+            }
+        }
+    }
+
+    //ssrurnizi,aba
+    function type2g() {
+
+        if (kai == 1) {
+
+            if (ssr == true) {
+
+                if (ch_ken2.checked == true) {
+                    document.getElementById(gstr).value = "絆\n×" + 24
+                    kizu = 24 + kizu / 1
+                    ken2 = ken2 / 1 - 1
+                    _ken2 += 1
+                    ken_bun(2, ken2)
+
+                    if (ken2 == 0) {
+                        ch_ken2.checked = false
+                        ch_ken2.disabled = true
+                    }
+                }
+
+                else {
+                    document.getElementById(gstr).value = "絆\n×" + 12
+                    kizu = 12 + kizu / 1
+                }
+
+            }
+
+            else {
+
+                if (ch_ken2.checked == true) {
+                    document.getElementById(gstr).value = "絆\n×" + 10
+                    kizu = 10 + kizu / 1
+                    ken2 = ken2 / 1 - 1
+                    _ken2 += 1
+                    ken_bun(2, ken2)
+
+                    if (ken2 == 0) {
+                        ch_ken2.checked = false
+                        ch_ken2.disabled = true
+                    }
+
+                }
+
+                else {
+                    document.getElementById(gstr).value = "絆\n×" + 5
+                    kizu = 5 + kizu / 1
+
+                }
+            }
+
+
+            dis_me.value = kizu
+            kizu_bun(kizu, kizu_max)
+            kai = 11
+        }
+
+        else {
+            rand = Math.floor(Math.random() * 100)
+
+            if (rand <= 7) {
+
+                if (ssr == true) {
+                    document.getElementById(gstr).value = "絆\n×" + 4
+                    kizu = 4 + kizu / 1
+                    dis_me.value = kizu
+                    kizu_bun(kizu, kizu_max)
+                }
+
+                else {
+                    document.getElementById(gstr).value = "絆\n×" + 2
+                    kizu = 2 + kizu / 1
+                    dis_me.value = kizu
+                    kizu_bun(kizu, kizu_max)
+                }
+            }
+
+            else if (rand <= 27) {
+                document.getElementById(gstr).value = "副訓練3\n×" + 3
+                kun3 += 3
+            }
+
+            else if (rand <= 47) {
+                document.getElementById(gstr).value = "強化石\n×" + 100
+                kyou += 100
+            }
+
+            else if (rand <= 62) {
+                document.getElementById(gstr).value = "宝石券\n×" + 20
+                hou += 20
+            }
+
+            else if (rand <= 72) {
+                document.getElementById(gstr).value = "副訓練4\n×" + 1
+                kun4 += 1
+            }
+
+            else if (rand <= 78) {
+                document.getElementById(gstr).value = "ボス券\n×" + 2
+                bosu += 2
+            }
+
+            else if (rand <= 85) {
+                document.getElementById(gstr).value = "訓練券\n×" + 2
+                kun += 2
+            }
+
+            else if (rand <= 93) {
+                document.getElementById(gstr).value = "紅翡翠\n×" + 1
+                beni += 1
+            }
+
+            else if (rand <= 97) {
+                document.getElementById(gstr).value = "MR割引\n×" + 1
+                ken1 = ken1 / 1 + 1
+                ken_bun(1, ken1)
+                ch_ken1.disabled = false
+                wari += 1
+            }
+
+            else if (rand <= 99) {
+                document.getElementById(gstr).value = "MR幸運\n×" + 1
+                ken2 = ken2 / 1 + 1
+                ken_bun(2, ken2)
+                ch_ken2.disabled = false
+                kou += 1
+            }
+        }
+    }
+
+    //bi l
+    function type35g() {
+
+        if (kai == 1) {
+            document.getElementById(gstr).value = "絆\n×" + 6 * bafu
+            kizu = 6 * bafu + kizu / 1
+            dis_me.value = kizu
+            kizu_bun(kizu, kizu_max)
+            kai = 11
+
+            if (bafu == 2) {
+                b52 += 1
+            }
+            else if (bafu == 5) {
+                b55 += 1
+            }
+        }
+
+        else {
+            rand = Math.floor(Math.random() * 100)
+
+            if (rand <= 7) {
+                document.getElementById(gstr).value = "絆\n×" + 2 * bafu
+                kizu = 2 * bafu + kizu / 1
+                dis_me.value = kizu
+                kizu_bun(kizu, kizu_max)
+
+                if (bafu == 2) {
+                    b22 += 1
+                }
+                else if (bafu == 5) {
+                    b25 += 1
+                }
+            }
+
+            else if (rand <= 27) {
+                document.getElementById(gstr).value = "副訓練3\n×" + 3 * bafu
+                kun3 += 3 * bafu
+            }
+
+            else if (rand <= 47) {
+                document.getElementById(gstr).value = "宝石券\n×" + 20 * bafu
+                hou += 20 * bafu
+            }
+
+            else if (rand <= 62) {
+                document.getElementById(gstr).value = "強化石\n×" + 100 * bafu
+                kyou += 100 * bafu
+            }
+
+            else if (rand <= 77) {
+                document.getElementById(gstr).value = "副訓練4\n×" + 1 * bafu
+                kun4 += 1 * bafu
+            }
+
+            else if (rand <= 83) {
+                document.getElementById(gstr).value = "ボス券\n×" + 2 * bafu
+                bosu += 2 * bafu
+            }
+
+            else if (rand <= 89) {
+                document.getElementById(gstr).value = "訓練券\n×" + 2 * bafu
+                kun += 2 * bafu
+            }
+
+            else if (rand <= 99) {
+                document.getElementById(gstr).value = "紅翡翠\n×" + 1 * bafu
+                beni += 1 * bafu
+            }
+        }
+    }
+
+    //kasou
+    function type4g() {
+
+        if (kai == 1) {
+
+            if (ssr == true) {
+
+                if (ch_ken2.checked == true) {
+                    document.getElementById(gstr).value = "絆\n×" + 24
+                    kizu = 24 + kizu / 1
+                    ken2 = ken2 / 1 - 1
+                    _ken2 += 1
+                    ken_bun(2, ken2)
+
+                    if (ken2 == 0) {
+                        ch_ken2.checked = false
+                        ch_ken2.disabled = true
+                    }
+                }
+
+                else {
+                    document.getElementById(gstr).value = "絆\n×" + 12
+                    kizu = 12 + kizu / 1
+
+                }
+
+            }
+
+            else {
+
+                if (ch_ken2.checked == true) {
+                    document.getElementById(gstr).value = "絆\n×" + 12
+                    kizu = 12 + kizu / 1
+                    ken2 = ken2 / 1 - 1
+                    _ken2 += 1
+                    ken_bun(2, ken2)
+
+                    if (ken2 == 0) {
+                        ch_ken2.checked = false
+                        ch_ken2.disabled = true
+                    }
+                }
+
+                else {
+                    document.getElementById(gstr).value = "絆\n×" + 6
+                    kizu = 6 + kizu / 1
+
+                }
+            }
+
+            dis_me.value = kizu
+            kizu_bun(kizu, kizu_max)
+            kai = 11
+        }
+        else {
+            rand = Math.floor(Math.random() * 100)
+
+            if (rand <= 7) {
+
+                if (ssr == true) {
+                    document.getElementById(gstr).value = "絆\n×" + 4
+                    kizu = 4 + kizu / 1
+                    dis_me.value = kizu
+                    kizu_bun(kizu, kizu_max)
+                }
+
+                else {
+                    document.getElementById(gstr).value = "絆\n×" + 2
+                    kizu = 2 + kizu / 1
+                    dis_me.value = kizu
+                    kizu_bun(kizu, kizu_max)
+                }
+            }
+
+            else if (rand <= 27) {
+                document.getElementById(gstr).value = "副訓練3\n×" + 3
+                kun3 += 3
+            }
+
+            else if (rand <= 47) {
+                document.getElementById(gstr).value = "宝石券\n×" + 20
+                hou += 20
+            }
+
+            else if (rand <= 62) {
+                document.getElementById(gstr).value = "強化石\n×" + 100
+                kyou += 100 * bafu
+            }
+
+            else if (rand <= 72) {
+                document.getElementById(gstr).value = "副訓練4\n×" + 1
+                kun4 += 1
+            }
+
+            else if (rand <= 78) {
+                document.getElementById(gstr).value = "ボス券\n×" + 2
+                bosu += 2
+            }
+
+            else if (rand <= 85) {
+                document.getElementById(gstr).value = "訓練券\n×" + 2
+                kun += 2
+            }
+
+            else if (rand <= 93) {
+                document.getElementById(gstr).value = "紅翡翠\n×" + 1
+                beni += 1
+            }
+
+            else if (rand <= 97) {
+                document.getElementById(gstr).value = "割引券\n×" + 1
+                ken1 = ken1 / 1 + 1
+                ken_bun(1, ken1)
+                ch_ken1.disabled = false
+                wari += 1
+            }
+
+            else if (rand <= 99) {
+                document.getElementById(gstr).value = "幸運券\n×" + 1
+                ken2 = ken2 / 1 + 1
+                ken_bun(2, ken2)
+                ch_ken2.disabled = false
+                kou += 1
+            }
+        }
+    }
+
+    function ken1_bun() {
+
+        if (ch_ken2.checked == true) {
+            ch_ken2.checked = false
+            kai_bun(kai, 0)
+        }
+
+        if (ch_ken1.checked == true) {
+            ga_one.value = "1回引く\n240元宝"
+            ga_ten.value = "1回引く\n2384元宝"
+        }
+        else {
+            ga_one.value = "1回引く\n300元宝"
+            ga_ten.value = "1回引く\n2980元宝"
+        }
+    }
+
+    function ken2_bun() {
+
+        if (ch_ken1.checked == true) {
+            ch_ken1.checked = false
+            ga_one.value = "1回引く\n300元宝"
+            ga_ten.value = "1回引く\n2980元宝"
+        }
+
+        if (ch_ken2.checked == true) {
+            kai_bun(kai, 2)
+        }
+        else {
+            kai_bun(kai, 0)
+        }
+
+    }
+
+    function reset() {
+
+        gp = 0
+        bafu = 1
+
+        _gen = 0
+        _ken = 0
+        _ken1 = 0
+        _ken2 = 0
+        _kai = 0
+        b2k = 0
+        b5k = 0
+        b22 = 0
+        b25 = 0
+        b52 = 0
+        b55 = 0
+
+        beni = 0
+        kun3 = 0
+        kun4 = 0
+        kun = 0
+        wari = 0
+        kou = 0
+        bosu = 0
+        kyou = 0
+        hou = 0
+
+        endg = false
+        end()
+        document.getElementById("dataj").hidden = true
+
+        start()
+        ken_ch()
+
+        document.getElementById("g1").value = ""
+        document.getElementById("g2").value = ""
+        document.getElementById("g3").value = ""
+        document.getElementById("g4").value = ""
+        document.getElementById("g5").value = ""
+        document.getElementById("g6").value = ""
+        document.getElementById("g7").value = ""
+        document.getElementById("g8").value = ""
+        document.getElementById("g9").value = ""
+        document.getElementById("g10").value = ""
+
+        document.getElementById("ch_ken").checked=false
+
+    }
+
+
+
+
+
+
+
+
+
+</script>
+
+
+</html>
