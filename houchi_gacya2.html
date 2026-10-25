@@ -1,0 +1,1684 @@
+<html>
+
+<head>
+
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1">
+
+    <h1 class="title">ガチャシミュレーター</h1>
+
+</head>
+
+<body>
+
+    <!-- -->
+
+
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1">
+
+    <!--first setting -->
+    <div id="field" style="background-color: aqua ">
+
+        <fieldset id="f0">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <label for="gen" class="label">元宝</label>
+                <input type="number" id="gen" class="list" min="0" max="999999" value="0">
+                <label for="ken" class="label">　ガチャ券</label>
+                <input type="number" id="ken" class="list" min="0" max="999" value="0">
+            </div>
+        </fieldset>
+
+        <fieldset id="f1">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <label for="select1" class="label">ガチャの種類</label>
+                <select id="select1" class="sel" onchange="select()">
+                    <option value="0">MR聖</option>
+                    <!--   <option value="1">MRアバ(SSRから)</option>
+                    <option value="2">MRアバ(URから)</option>
+                    <option value="3">MRアバ(UR閃から)</option>  -->
+                    <option value="4">MRアバ</option>
+                    <option value="5">その他</option>
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset id="f2">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <label for="kai" class="label">確定までの回数</label>
+                <input type="number" id="kai" class="list" min="1" max="10" value="10">
+                <label for="kizuna" class="label">　絆の個数</label>
+                <input type="number" id="curki" class="list" min="0" max="240" value="0">
+                <label for="kizuna" class="label">　/　</label>
+                <input type="number" id="maxki" class="list" min="0" max="240" value="240" disabled>
+                <label for="kizuna" class="label">　確定絆の個数</label>
+                <input type="number" id="kakuki" class="list" min="1" max="12" value="5" disabled>
+            </div>
+        </fieldset>
+
+        <fieldset id="f3">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <input type="checkbox" id="kenon" class="umu" style="width: 2rem;" onchange="kenchange()" disabled>
+                <label for="umu" class="label">券の使用</label>
+                <label for="ken1" class="label">　　割引券</label>
+                <input type="number" id="ken1" class="list" min="0" max="999" value="0" disabled>
+                <label for="ken2" class="label">　幸運券</label>
+                <input type="number" id="ken2" class="list" min="0" max="999" value="0" disabled>
+            </div>
+        </fieldset>
+
+        <fieldset id="f4">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <label for="curbo" class="label">ボーナス</label>
+                <input type="number" id="mrcurbo" class="list" min="0" max="999" value="0">
+                <label for="mrcurbo" class="label">　/ 10000　　　</label>
+                <input type="number" id="abacurbo" class="list" min="0" max="999" value="0" disabled>
+                <label for="abacurbo" class="label">　/ 15</label>
+            </div>
+        </fieldset>
+
+        <fieldset id="f5">
+            <div style="display: flex;margin-top: 1rem;margin-bottom: 1rem;">
+                <input type="checkbox" id="bafuon" class="umu" style="width: 2rem;" onchange="bafuchange()" checked
+                    disabled>
+                <label for="umu" class="label">バフの有無</label>
+                <label for="bafu2" class="label">　2倍バフの確率%</label>
+                <input type="number" id="bafu2" value="15" class="list" disabled>
+                <label for="bafu5" class="label">　5倍バフの確率%</label>
+                <input type="number" id="bafu5" value="2" class="list" disabled>
+            </div>
+        </fieldset>
+    </div>
+
+    <!--start button -->
+    <div id="stdiv" style="margin-top: 1rem;margin-bottom: 1rem;display: flex;justify-content: space-around;">
+        <input type="button" value="ガチャ開始" class="st_bo" id="st_bo" onclick="start()">
+    </div>
+
+    <!--gacya -->
+    <div class="pane" id="panel">
+
+        <div class="fil" id="gacyadiv" hidden>
+
+            <!--number of gacya tickt and genpou -->
+            <div class="div_genmizu">
+                <label>ガチャ券<input type="number" value="0" class="dis_mizu" id="dis_ken" disabled></label>
+                <label>元宝<input type="number" value="0" class="dis_gen" id="dis_gen" disabled></label>
+            </div>
+
+            <!--bornas meter-->
+            <div class="m2" id="bonadiv">
+                <label for="gacya_me" class="gacya_me_la">ガチャ券ボーナス</label>
+                <meter min="0" max="10000" class="gacya_me" id="bona_meter"></meter>
+                <label class="gacya_me_la2" id="meter_label">0/10000</label>
+            </div>
+
+            <!--show item -->
+            <div class="aida">
+                <table cellpadding="1rem" style="margin: auto;text-align: center;">
+                    <tr>
+                        <td><input type="button" class="gacya_re" id="g1"></td>
+                        <td><input type="button" class="gacya_re" id="g2"></td>
+                        <td><input type="button" class="gacya_re" id="g3"></td>
+                        <td><input type="button" class="gacya_re" id="g4"></td>
+                        <td><input type="button" class="gacya_re" id="g5"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="button" class="gacya_re" id="g6"></td>
+                        <td><input type="button" class="gacya_re" id="g7"></td>
+                        <td><input type="button" class="gacya_re" id="g8"></td>
+                        <td><input type="button" class="gacya_re" id="g9"></td>
+                        <td><input type="button" class="gacya_re" id="g10"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!--show bafu -->
+            <div class="bafud">
+                <label class="bafu_bun" id="bafu_label" hidden></label>
+            </div>
+
+            <!--show ken -->
+            <div class="ken" id="kendiv">
+                <div>
+                    <input type="checkbox" class="dis_ken" id="ch_ken1" onchange="ken1change(),gacyacheck()">
+                    <label class="kenn" id="ken1_label">割引券×0</label>
+                </div>
+                <div>
+                    <input type="checkbox" class="dis_ken" id="ch_ken2" onchange="ken2change(),gacyacheck()">
+                    <label class="kenn" id="ken2_label">幸運券×0</label>
+                </div>
+            </div>
+
+            <!--show current kizuna -->
+            <div class="kaiki">
+                <p class="kaip1" id="kai_p">10回後、確定絆×5</p>
+                <p class="kaip2" id="kizu_p">0/240</p>
+            </div>
+
+            <!--show meter -->
+            <div class="dmeter">
+                <meter min="0" max="240" class="meter" id="kizu_meter"></meter>
+            </div>
+
+            <!--show gacyaken button -->
+            <div class="kenon">
+                <label>ガチャ券を使う<input type="checkbox" class="kenon_ch" id="ch_ken" onchange="gacyacheck()"></label>
+            </div>
+
+            <!--show gacya button -->
+            <div class="ga">
+                <input type="button" value="1回引く&#13;&#10;300元宝" class="ga_bo" id="gacyaone" onclick="gacya(0)">
+                <input type="button" value="10回引く&#13;&#10;2980元宝" class="ga_bo" id="gacyaten" onclick="gacya(1)">
+            </div>
+
+        </div>
+
+        <!--show gacya data after gacya -->
+        <div class="datad" id="dataj" hidden>
+            <p>詳細データ</p>
+            <p></p>
+
+            <div>
+                <label>ガチャを回した回数</label>
+                <label class="data_gen" id="data_kai">0</label>
+            </div>
+            <div>
+                <label>消費元宝</label>
+                <label class="data_gen" id="data_gen">0</label>
+            </div>
+            <div>
+                <label>消費ガチャ券</label>
+                <label class="data_gen" id="data_ken">0</label>
+            </div>
+            <div>
+                <label>消費割引券</label>
+                <label class="data_gen" id="data_ken1">0</label>
+            </div>
+            <div>
+                <label>消費幸運券</label>
+                <label class="data_gen" id="data_ken2">0</label>
+            </div>
+            <div><label>----------</label></div>
+            <div>
+                <label>2倍バフの回数</label>
+                <label class="data_gen" id="b2k">0</label>
+            </div>
+            <div>
+                <label>5倍バフの回数</label>
+                <label class="data_gen" id="b5k">0</label>
+            </div>
+            <div>
+                <label>2倍バフが野良絆にのった回数</label>
+                <label class="data_gen" id="b22">0</label>
+            </div>
+            <div>
+                <label>5倍バフが野良絆にのった回数</label>
+                <label class="data_gen" id="b25">0</label>
+            </div>
+            <div>
+                <label>2倍バフが確定絆にのった回数</label>
+                <label class="data_gen" id="b52">0</label>
+            </div>
+            <div>
+                <label>5倍バフが確定絆にのった回数</label>
+                <label class="data_gen" id="b55">0</label>
+            </div>
+            <div><label>----------</label></div>
+            <div>
+                <label>紅翡翠</label>
+                <label class="data_gen" id="data_beni">0</label>
+            </div>
+            <div>
+                <label>副将訓練4</label>
+                <label class="data_gen" id="data_kun4">0</label>
+            </div>
+            <div>
+                <label>副将訓練3</label>
+                <label class="data_gen" id="data_kun3">0</label>
+            </div>
+            <div>
+                <label>強化石</label>
+                <label class="data_gen" id="data_kyou">0</label>
+            </div>
+            <div>
+                <label>宝石券</label>
+                <label class="data_gen" id="data_hou">0</label>
+            </div>
+            <div>
+                <label>ボス券</label>
+                <label class="data_gen" id="data_bosu">0</label>
+            </div>
+            <div>
+                <label>訓練券</label>
+                <label class="data_gen" id="data_kun">0</label>
+            </div>
+            <div>
+                <label>割引券</label>
+                <label class="data_gen" id="data_wari">0</label>
+            </div>
+            <div>
+                <label>幸運券</label>
+                <label class="data_gen" id="data_kou">0</label>
+            </div>
+        </div>
+
+    </div>
+
+    <!--show continue or finish button after gacya -->
+    <div style="margin-top: 1rem;margin-bottom: 1rem;display: flex;justify-content: space-around;">
+        <input type="button" value="設定を初期化" class="syoki" id="syb" onclick="syokika()" hidden>
+        <input type="button" value="同じ設定で最初から" class="syoki" id="mou" onclick="reset()" hidden>
+    </div>
+
+
+</body>
+
+
+<style>
+    .datad {
+        display: flexbox;
+        height: 37rem;
+        width: 26rem;
+        background-color: rgb(182, 208, 255);
+        margin: auto;
+    }
+
+    .pane {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin: 1rem, 0rem;
+    }
+
+    .title {
+        font-size: 3rem;
+    }
+
+    .label {
+        font-size: 1rem;
+    }
+
+    .list {
+        display: flex;
+        text-align: right;
+        height: 1.5rem;
+        width: 6rem;
+    }
+
+    .listch {
+        display: flex;
+        text-align: right;
+        height: 1rem;
+        width: 2rem;
+    }
+
+    .fil {
+        display: flexbox;
+        height: 32rem;
+        width: 26rem;
+        background-color: lightpink;
+        margin: auto;
+    }
+
+    .div_genmizu {
+        text-align: right;
+        height: 4rem;
+        width: 26rem;
+    }
+
+    .dis_mizu {
+        width: 7rem;
+        height: 2rem;
+        justify-content: right;
+        text-align: right;
+        font-size: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .dis_gen {
+        width: 7rem;
+        height: 2rem;
+        justify-content: right;
+        text-align: right;
+        font-size: 1.5rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+
+    .aida {
+        height: 11rem;
+        width: 26rem;
+        display: flex;
+    }
+
+    .ken {
+        height: 3rem;
+        width: 26rem;
+        text-align: right;
+    }
+
+    .dmeter {
+        height: 2rem;
+        width: 26rem;
+        display: flex;
+        text-align: center;
+    }
+
+    .ga {
+        height: 4rem;
+        width: 26rem;
+        margin: auto;
+        text-align: center;
+        justify-content: space-around;
+    }
+
+    .syoki {
+        height: 5rem;
+        width: 18rem;
+        font-size: 2rem;
+    }
+
+    .kenon {
+        height: 2rem;
+        width: 26rem;
+        text-align: center;
+        margin: auto;
+    }
+
+    .meter {
+        width: 24rem;
+        height: 2rem;
+        margin: auto;
+    }
+
+    .kaiki {
+        height: 2rem;
+        width: 26rem;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .ga_bo {
+        text-align: center;
+        height: 3rem;
+        width: 7rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .kenon_ch {
+        margin-top: 0.5rem;
+    }
+
+    .kaip1 {
+        display: inline;
+        font-size: 1.2rem;
+        margin-right: 3rem;
+    }
+
+    .kaip2 {
+        display: inline;
+        font-size: 1.2rem;
+        margin-left: 4rem;
+        margin-right: 3rem;
+        color: rgb(255, 0, 0);
+    }
+
+    .m2 {
+        height: 2rem;
+        width: 26rem;
+        text-align: center;
+    }
+
+    .gacya_me {
+        width: 5rem;
+    }
+
+    .gacya_me_la {
+        margin-left: 5rem;
+    }
+
+    .kenn {
+        margin-right: 1rem;
+    }
+
+    .dis_ken {
+        text-align: center;
+    }
+
+    .gacya_re {
+        height: 4.5rem;
+        width: 4.5rem;
+    }
+
+    .bafud {
+        height: 2rem;
+        width: 26rem;
+        text-align: center;
+    }
+
+    .syu_bun {
+        font-size: 1.5rem;
+    }
+
+    .bafu_bun {
+        font-size: 1.5rem;
+    }
+
+    .st_bo {
+        height: 5rem;
+        width: 20rem;
+        font-size: 2rem;
+    }
+
+    @media screen and (max-width:480px) {
+
+        .pane {
+            margin: auto;
+            text-align: center;
+            display: block;
+        }
+
+        .title {
+            font-size: 1.5rem;
+        }
+
+        .label {
+            font-size: 0.6rem;
+        }
+
+        .sel {
+            height: 1.1rem;
+            width: 3.5rem;
+            text-align: right;
+        }
+
+        .list {
+            display: flex;
+            text-align: right;
+            height: 1.1rem;
+            width: 3.5rem;
+        }
+
+        .fil {
+            display: flexbox;
+            height: 25rem;
+            width: 20rem;
+            background-color: lightpink;
+            margin: auto;
+        }
+
+        .datad {
+            display: flexbox;
+            height: 36rem;
+            width: 20rem;
+            background-color: rgb(182, 208, 255);
+            margin: auto;
+        }
+
+        .div_genmizu {
+            text-align: right;
+            height: 2.2rem;
+            width: 20rem;
+        }
+
+        .dis_mizu {
+            width: 3rem;
+            height: 1.5rem;
+            justify-content: right;
+            text-align: right;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .dis_gen {
+            width: 4rem;
+            height: 1.5rem;
+            justify-content: right;
+            text-align: right;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        .aida {
+            height: 7rem;
+            width: 20rem;
+            display: flex;
+        }
+
+        .ken {
+            height: 2.7rem;
+            width: 20rem;
+            font-size: 0.7rem;
+            text-align: right;
+        }
+
+        .dmeter {
+            height: 2rem;
+            width: 20rem;
+            display: flex;
+            text-align: center;
+        }
+
+        .ga {
+            height: 3.5rem;
+            width: 20rem;
+            margin: auto;
+            text-align: center;
+            display: inline-block;
+            justify-content: space-around;
+        }
+
+
+        .syoki {
+            height: 5rem;
+            width: 18rem;
+            font-size: 2rem;
+        }
+
+        .kenon {
+            height: 1.7rem;
+            width: 20rem;
+            text-align: center;
+            margin: auto;
+        }
+
+        .meter {
+            width: 18rem;
+            height: 2rem;
+            margin: auto;
+        }
+
+        .kaiki {
+            height: 1.5rem;
+            width: 20rem;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .ga_bo {
+            text-align: center;
+            height: 2.5rem;
+            width: 6rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .kenon_ch {
+            margin-top: 0.5rem;
+        }
+
+        .kaip1 {
+            display: inline;
+            font-size: 1rem;
+            margin-right: 1rem;
+        }
+
+        .kaip2 {
+            display: inline;
+            font-size: 1rem;
+            margin-left: 3rem;
+            margin-right: 1rem;
+            color: rgb(255, 0, 0);
+        }
+
+        .m2 {
+            height: 1.8rem;
+            width: 20rem;
+            text-align: center;
+        }
+
+        .gacya_me {
+            width: 3rem;
+        }
+
+        .gacya_me_la {
+            margin-left: 5rem;
+            font-size: 0.6rem;
+        }
+
+        .kenn {
+            margin-right: 1rem;
+        }
+
+        .dis_ken {
+            text-align: center;
+
+        }
+
+        .gacya_re {
+            height: 3rem;
+            width: 3rem;
+            font-size: 0.6rem
+        }
+
+
+
+        .bafud {
+            height: 1.5rem;
+            width: 20rem;
+            text-align: center;
+        }
+
+        .syu_bun {
+            font-size: 1rem;
+        }
+
+        .bafu_bun {
+            font-size: 0.8rem;
+        }
+
+        .gacya_me_la2 {
+            font-size: 0.6rem;
+        }
+
+        .st_bo {
+            height: 3rem;
+            width: 10rem;
+            font-size: 1.5rem;
+        }
+
+        .syoki {
+            height: 3rem;
+            width: 8rem;
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<script>
+
+    //make short id name
+
+    //div
+    var field = document.getElementById("field");
+    var stdiv = document.getElementById("stdiv");
+    var panel = document.getElementById("panel");
+    var bonadiv = document.getElementById("bonadiv");
+    var kendiv = document.getElementById("kendiv");
+
+    var gacyadiv = document.getElementById("gacyadiv");
+
+    var syb = document.getElementById("syb");
+    var mou = document.getElementById("mou");
+
+
+
+    //display value
+    var dis_ken = document.getElementById("dis_ken");
+    var dis_gen = document.getElementById("dis_gen");
+    var bona_meter = document.getElementById("bona_meter");
+    var meter_label = document.getElementById("meter_label");
+    var bafu_label = document.getElementById("bafu_label");
+    var ken1_label = document.getElementById("ken1_label");
+    var ken2_label = document.getElementById("ken2_label");
+    var kai_p = document.getElementById("kai_p");
+    var kizu_p = document.getElementById("kizu_p");
+    var kizu_meter = document.getElementById("kizu_meter");
+
+    var dis_one = document.getElementById("gacyaone");
+    var dis_ten = document.getElementById("gacyaten");
+
+    //kind of input
+    var st_bo = document.getElementById("st_bo");
+    var ch_ken = document.getElementById("ch_ken");
+    var ch_ken1 = document.getElementById("ch_ken1");
+    var ch_ken2 = document.getElementById("ch_ken2");
+
+    var bafuon = document.getElementById("bafuon");
+    var kenon = document.getElementById("kenon");
+
+    //unchangeable value from fieldset
+    var type = document.getElementById("select1");
+    var f_gen = document.getElementById("gen");
+    var f_ken = document.getElementById("ken");
+    var f_kai = document.getElementById("kai");
+    var f_curki = document.getElementById("curki");
+    var f_maxki = document.getElementById("maxki");
+    var f_ken1 = document.getElementById("ken1");
+    var f_ken2 = document.getElementById("ken2");
+    var f_bosei = document.getElementById("mrcurbo");
+    var f_boab = document.getElementById("abacurbo");
+    var ba2 = document.getElementById("bafu2");
+    var ba5 = document.getElementById("bafu5");
+    var kakuki = document.getElementById("kakuki");
+
+    // function value set
+    //genpo
+    var gen = 0;
+    //gacya ken
+    var ken = 0;
+    //kakutei madeno kaisu
+    var kakukai = 0;
+    //current kizuna
+    var curki = 0;
+    //max kizuna
+    var maxki = 0;
+    //waribikki
+    var ken1 = 0;
+    //koun
+    var ken2 = 0;
+    //bonasu sei current genpo
+    var bosei = 0;
+    //bonasu aba current number
+    var boab = 0;
+
+    //reset when mouitido
+    //bafu 1,2 or 5
+    var bafu = 1;
+    //total gacya kaisu
+    var totalkai = 0;
+    //total consumed genpo
+    var totalgen = 0;
+    //total gacyaken
+    var totalken = 0;
+    var totalken1 = 0;
+    var totalken2 = 0;
+    //bona state
+    //value;sei;aba
+    //0;10000;15
+    //1;20000;50
+    //2;30000;100
+    //3;50000;200
+    //4;70000;300
+    //5;-    ;400
+    //6;-    ;-
+    var bonastate = -1;
+    //next gacya items place
+    var gp = 0;
+    //to change gp to string to use display gacya
+    var gstr = "";
+    //set random number to use gacya
+    var rand = 0;
+    //gacya end
+    var endg = false;
+
+    //ken12 state
+    //0 gen
+    //1 ken1
+    //2 ken2
+    var ken12;
+
+    var b2k = 0;
+    var b5k = 0;
+    var b22 = 0;
+    var b25 = 0;
+    var b52 = 0;
+    var b55 = 0;
+    var kun3 = 0;
+    var kun4 = 0;
+    var beni = 0;
+    var wari = 0;
+    var kou = 0;
+    var hou = 0;
+    var kyou = 0;
+    var bosu = 0;
+    var kun = 0;
+    //var k2=0
+    //var k5=0
+
+
+
+    //change state of fieldset by slectiing list
+    function select() {
+
+        if (type.value == 0) {
+            f_ken1.disabled = true;
+            f_ken2.disabled = true;
+            f_bosei.disabled = false;
+            f_boab.disabled = true;
+            f_maxki.value = 240;
+            f_maxki.disabled = true;
+            kakuki.disabled = true;
+            bafuon.disabled = true;
+            bafuon.checked = true;
+            kenon.checked = false;
+            kenon.disabled = true;
+        }
+        else if (type.value == 5) {
+            f_ken1.disabled = false;
+            f_ken2.disabled = false;
+            f_bosei.disabled = true;
+            f_boab.disabled = true;
+            f_maxki.disabled = false;
+            kakuki.disabled = false;
+            bafuon.disabled = false;
+            bafuon.checked = false;
+            kenon.checked = true;
+            kenon.disabled = false;
+        }
+
+        //typevalue 4
+        else {
+            f_ken1.disabled = false;
+            f_ken2.disabled = false;
+            f_bosei.disabled = true;
+            f_boab.disabled = false;
+            f_maxki.value = 120;
+            f_maxki.disabled = true;
+            kakuki.disabled = true;
+            bafuon.disabled = true;
+            bafuon.checked = false;
+            kenon.checked = true;
+            kenon.disabled = true;
+        }
+    }
+
+    //change ken state(able or disable) in first setting
+    function kenchange() {
+        if (kenon.checked == true) {
+            f_ken1.disabled = false;
+            f_ken2.disabled = false;
+            bafuon.checked = false;
+        }
+        else {
+            f_ken1.disabled = true;
+            f_ken2.disabled = true;
+            bafuon.checked = true;
+        }
+    }
+
+    //change ken12 state in gacya
+    function ken1change() {
+
+        if (ch_ken1.checked == true) {
+            if (ch_ken2.checked == true) {
+                ch_ken2.checked = false
+                kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value
+            }
+        }
+    }
+
+    function ken2change() {
+
+        if (ch_ken2.checked == true) {
+            if (ch_ken1.checked == true) {
+                ch_ken1.checked = false
+                kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value * 2
+            }
+        }
+    }
+
+    //bafu version of above
+    function bafuchange() {
+        if (bafuon.checked == true) {
+            f_ken1.disabled = true
+            f_ken2.disabled = true
+            kenon.checked = false
+        }
+        else {
+            f_ken1.disabled = false
+            f_ken2.disabled = false
+            kenon.checked = true
+        }
+    }
+
+    //set value from fieldset
+    function valueset() {
+        gen = Number(f_gen.value)
+        ken = Number(f_ken.value)
+        kakukai = Number(f_kai.value)
+        curki = Number(f_curki.value)
+        maxki = Number(f_maxki.value)
+        ken1 = Number(f_ken1.value)
+        ken2 = Number(f_ken2.value)
+        bosei = Number(f_bosei.value)
+        boab = Number(f_boab.value)
+    }
+
+    //set display items show or hide by gacya type
+    function gacyaset() {
+
+        field.hidden = true;
+        st_bo.hidden = true;
+        gacyadiv.hidden = false;
+        syb.hidden = false;
+        mou.hidden = false;
+
+
+        if (type.value == 0) {
+            bonadiv.hidden = false
+            kendiv.hidden = true
+        }
+        else if (type.value == 5) {
+            bonadiv.hidden = true
+            kendiv.hidden = true
+        }
+        else {
+            bonadiv.hidden = false
+            kendiv.hidden = false
+        }
+    }
+
+    //ken12 able or disable
+    function ken12check() {
+        if (ken1 == 0) {
+            ch_ken1.checked = false
+            ch_ken1.disabled = true
+        }
+        if (ken2 == 0) {
+            ch_ken2.checked = false
+            ch_ken2.disabled = true
+        }
+    }
+
+    //check and change gacya button state
+    function gacyacheck() {
+
+        if (ch_ken.checked == true) {
+
+            ch_ken1.checked = false
+            ch_ken1.disabled = true
+
+            dis_one.value = "1回引く\nガチャ券×1"
+            dis_ten.value = "10回引く\nガチャ券×10"
+
+            if (ch_ken2.checked == true) {
+                kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value * 2
+            }
+            else {
+                kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value
+            }
+
+            if (ken < 1) {
+                dis_one.disabled = true;
+                dis_ten.disabled = true;
+            }
+            else if (ken < 10) {
+                dis_one.disabled = false;
+                dis_ten.disabled = true;
+            }
+            else {
+                dis_one.disabled = false;
+                dis_ten.disabled = false;
+            }
+        }
+        else if (ch_ken1.checked == true) {
+
+            ch_ken1.disabled = false
+
+            dis_one.value = "1回引く\n240元宝"
+            dis_ten.value = "10回引く\n2384元宝"
+
+            kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value
+
+            if (gen < 240) {
+                dis_one.disabled = true;
+                dis_ten.disabled = true;
+            }
+            else if (gen < 2384) {
+                dis_one.disabled = false;
+                dis_ten.disabled = true;
+            }
+            else {
+                dis_one.disabled = false;
+                dis_ten.disabled = false;
+            }
+        }
+        else {
+
+            ch_ken1.disabled = false
+
+            dis_one.value = "1回引く\n300元宝"
+            dis_ten.value = "10回引く\n2980元宝"
+
+            if (ch_ken2.checked == true) {
+                kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value * 2
+            }
+            else {
+                kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value
+            }
+
+            if (gen < 300) {
+                dis_one.disabled = true;
+                dis_ten.disabled = true;
+            }
+            else if (gen < 2980) {
+                dis_one.disabled = false;
+                dis_ten.disabled = true;
+            }
+            else {
+                dis_one.disabled = false;
+                dis_ten.disabled = false;
+            }
+        }
+    }
+
+    //display value
+    function displayvalue() {
+
+        dis_ken.value = ken
+        dis_gen.value = gen
+        bafu_label.innerHTML = bafu + "倍ラッキーバフ発動!"
+        ken1_label.innerHTML = "割引券×" + ken1
+        ken2_label.innerHTML = "幸運券×" + ken2
+        kizu_p.innerHTML = curki + "/" + maxki
+        kizu_meter.value = curki
+
+        if (ch_ken2.checked == true) {
+            kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value * 2
+        }
+        else {
+            kai_p.innerHTML = kakukai + "回後、確定絆×" + kakuki.value
+        }
+    }
+
+    //display bona meter
+    function displaymeter() {
+
+        if (type.value == 5) { }
+
+        //type of sei
+        else if (type.value == 0) {
+            if (totalgen + bosei < 10000) {
+                bona_meter.value = totalgen + bosei
+                meter_label.innerHTML = (totalgen + bosei) + "/" + 10000
+                bonastate = 0;
+            }
+            else if (totalgen + bosei < 20000) {
+                if (bonastate == 0) {
+                    ken += 5
+                }
+                bonastate = 1
+                bona_meter.min = 10000
+                bona_meter.max = 20000
+                bona_meter.value = totalgen + bosei
+                meter_label.innerHTML = (totalgen + bosei) + "/" + 2000
+            }
+            else if (totalgen + bosei < 30000) {
+                if (bonastate == 1) {
+                    ken += 5
+                }
+                bonastate = 2
+                bona_meter.min = 20000
+                bona_meter.max = 30000
+                bona_meter.value = totalgen + bosei
+                meter_label.innerHTML = (totalgen + bosei) + "/" + 30000
+            }
+            else if (totalgen + bosei < 50000) {
+                if (bonastate == 2) {
+                    ken += 10
+                }
+                bonastate = 3
+                bona_meter.min = 30000
+                bona_meter.max = 50000
+                bona_meter.value = totalgen + bosei
+                meter_label.innerHTML = (totalgen + bosei) + "/" + 50000
+            }
+            else if (totalgen + bosei < 70000) {
+                if (bonastate == 3) {
+                    ken += 10
+                }
+                bonastate = 4
+                bona_meter.min = 50000
+                bona_meter.max = 70000
+                bona_meter.value = totalgen + bosei
+                meter_label.innerHTML = (totalgen + bosei) + "/" + 70000
+            }
+            else if (totalgen + bosei > 70000) {
+                if (bonastate == 4) {
+                    ken += 20
+                }
+                bonastate = 5
+                bona_meter.value = 70000
+                meter_label.innerHTML = 70000 + "/" + 70000
+            }
+        }
+        //type of aba
+        else {
+            if (totalkai + boab < 15) {
+                bona_meter.value = totalkai + boab
+                meter_label.innerHTML = (totalkai + boab) + "/" + 15
+                bonastate = 0
+            }
+            else if (totalkai + boab < 50) {
+                if (bonastate == 0) {
+                    ken += 2
+                }
+                bonastate = 1
+                bona_meter.min = 15
+                bona_meter.max = 50
+                bona_meter.value = totalkai + boab
+                meter_label.innerHTML = (totalkai + boab) + "/" + 50
+            }
+            else if (totalkai + boab < 100) {
+                if (bonastate == 1) {
+                    ken += 3
+                }
+                bonastate = 2
+                bona_meter.min = 50
+                bona_meter.max = 100
+                bona_meter.value = totalkai + boab
+                meter_label.innerHTML = (totalkai + boab) + "/" + 100
+            }
+            else if (totalkai + boab < 200) {
+                if (bonastate == 2) {
+                    ken += 5
+                }
+                bonastate = 3
+                bona_meter.min = 100
+                bona_meter.max = 200
+                bona_meter.value = totalkai + boab
+                meter_label.innerHTML = (totalkai + boab) + "/" + 200
+            }
+            else if (totalkai + boab < 300) {
+                if (bonastate == 3) {
+                    ken += 10
+                }
+                bonastate = 4
+                bona_meter.min = 200
+                bona_meter.max = 300
+                bona_meter.value = totalkai + boab
+                meter_label.innerHTML = (totalkai + boab) + "/" + 300
+            }
+            else if (totalkai + boab < 400) {
+                if (bonastate == 4) {
+                    ken += 30
+                }
+                bonastate = 5
+                bona_meter.min = 300
+                bona_meter.max = 400
+                bona_meter.value = totalkai + boab
+                meter_label.innerHTML = (totalkai + boab) + "/" + 400
+            }
+            else if (totalkai + boab > 400) {
+                if (bonastate == 5) {
+                    ken += 40
+                }
+                bonastate = 6
+                bona_meter.value = 400
+                meter_label.innerHTML = 400 + "/" + 400
+            }
+        }
+    }
+
+    //when gacya pushed oneten0:1 1:10
+    function gacya(oneten) {
+
+        if(oneten==1){
+            gp=10
+        }
+
+        for (var i = 0; i < 10; i++) {
+
+            
+            //reset gacya string ""
+            if (gp == 10) {
+                gp = 1
+                document.getElementById("g1").value = ""
+                document.getElementById("g2").value = ""
+                document.getElementById("g3").value = ""
+                document.getElementById("g4").value = ""
+                document.getElementById("g5").value = ""
+                document.getElementById("g6").value = ""
+                document.getElementById("g7").value = ""
+                document.getElementById("g8").value = ""
+                document.getElementById("g9").value = ""
+                document.getElementById("g10").value = ""
+            }
+
+            else {
+                gp += 1
+            }
+
+            //set gacya place string
+            gstr = "g" + gp
+
+            //do gacya
+            if (type.value == 0) {
+                type0();
+            }
+            else if (type.value == 4) {
+                type4();
+            }
+            else if (type.value == 5) {
+                type5();
+            }
+
+            //mainasu gen or ken(and plus total)
+            if (ch_ken.checked == true) {
+                ken -= 1;
+            }
+            else {
+                if (ch_ken1.checked == true) {
+                    gen -= 240
+                    totalgen += 240
+                }
+                else {
+                    gen -= 300
+                    totalgen += 300
+                }
+            }
+
+            totalkai += 1;
+
+            changebafu()
+            displaymeter();
+
+            if (curki >= maxki) {
+                endgacya()
+                break;
+            }
+
+            if (oneten == 0) {
+                break;
+            }
+        }
+
+        //when 10ren (plus over mainasued gen) 
+        if (oneten == 1) {
+            if (ch_ken1.checked == true) {
+                gen += 16
+            }
+            else {
+                gen += 20
+            }
+        }
+
+        //reduce ken12
+        if (ch_ken1.checked == true) {
+            ken1 -= 1
+        }
+        else if (ch_ken2.checked == true) {
+            if (kakukai == 10) {
+                ken2 -= 1
+            }
+
+        }
+
+        //when kizu overed
+        if (endg != true) {
+            gacyacheck();
+        }
+
+        displayvalue();
+
+    }
+
+    function syokika() {
+        window.location.reload(true);
+    }
+
+    //when gacya end
+    function endgacya() {
+        endg = true
+        dis_one.disabled = true
+        dis_ten.disabled = true
+        ch_ken.disabled = true
+
+        document.getElementById("data_gen").innerHTML = totalgen
+        document.getElementById("data_kai").innerHTML = totalkai
+        document.getElementById("data_ken").innerHTML = totalken
+        document.getElementById("data_ken1").innerHTML = totalken1
+        document.getElementById("data_ken2").innerHTML = totalken2
+        document.getElementById("b2k").innerHTML = b2k
+        document.getElementById("b5k").innerHTML = b5k
+        document.getElementById("b22").innerHTML = b22
+        document.getElementById("b25").innerHTML = b25
+        document.getElementById("b52").innerHTML = b52
+        document.getElementById("b55").innerHTML = b55
+        document.getElementById("data_beni").innerHTML = beni
+        document.getElementById("data_wari").innerHTML = wari
+        document.getElementById("data_kou").innerHTML = kou
+        document.getElementById("data_kun").innerHTML = kun
+        document.getElementById("data_kun3").innerHTML = kun3
+        document.getElementById("data_kun4").innerHTML = kun4
+        document.getElementById("data_hou").innerHTML = hou
+        document.getElementById("data_kyou").innerHTML = kyou
+        document.getElementById("data_bosu").innerHTML = bosu
+
+        document.getElementById("dataj").hidden = false
+    }
+
+    //reset value when gacya end
+    function reset() {
+
+        bafu = 1
+        bonastate = -1
+        gp = 0
+        gstr = ""
+        rand = 0
+        endg = false
+
+        totalkai = 0
+        totalgen = 0
+        totalken = 0
+        totalken1 = 0
+        totalken2 = 0
+
+        b2k = 0
+        b5k = 0
+        b22 = 0
+        b25 = 0
+        b52 = 0
+        b55 = 0
+        kun3 = 0
+        kun4 = 0
+        beni = 0
+        wari = 0
+        kou = 0
+        hou = 0
+        kyou = 0
+        bosu = 0
+        kun = 0
+
+        document.getElementById("g1").value = ""
+        document.getElementById("g2").value = ""
+        document.getElementById("g3").value = ""
+        document.getElementById("g4").value = ""
+        document.getElementById("g5").value = ""
+        document.getElementById("g6").value = ""
+        document.getElementById("g7").value = ""
+        document.getElementById("g8").value = ""
+        document.getElementById("g9").value = ""
+        document.getElementById("g10").value = ""
+
+        document.getElementById("dataj").hidden = true;
+
+        start();
+    }
+
+    //MRsei
+    function type0() {
+
+        if (kakukai == 1) {
+            document.getElementById(gstr).value = "絆\n×" + 5 * bafu
+            curki += 5 * bafu
+            kakukai = 10
+
+            if (bafu == 2) {
+                b52 += 1
+            }
+            else if (bafu == 5) {
+                b55 += 1
+            }
+        }
+
+        else {
+
+            kakukai -= 1;
+
+            rand = Math.floor(Math.random() * 100)
+
+            if (rand <= 7) {
+                document.getElementById(gstr).value = "絆\n×" + 2 * bafu
+                curki += 2 * bafu
+                if (bafu == 2) {
+                    b22 += 1
+                }
+                else if (bafu == 5) {
+                    b25 += 1
+                }
+            }
+
+            else if (rand <= 17) {
+                document.getElementById(gstr).value = "紅翡翠\n×" + 1 * bafu
+                beni += 1 * bafu
+            }
+
+            else if (rand <= 32) {
+                document.getElementById(gstr).value = "副訓練4\n×" + 1 * bafu
+                kun4 += 1 * bafu
+            }
+
+            else if (rand <= 52) {
+                document.getElementById(gstr).value = "副訓練3\n×" + 3 * bafu
+                kun3 += 3 * bafu
+            }
+
+            else if (rand <= 72) {
+                document.getElementById(gstr).value = "強化石\n×" + 100 * bafu
+                kyou += 100 * bafu
+            }
+
+            else if (rand <= 87) {
+                document.getElementById(gstr).value = "宝石券\n×" + 20 * bafu
+                hou += 20 * bafu
+            }
+
+            else if (rand <= 93) {
+                document.getElementById(gstr).value = "ボス券\n×" + 2 * bafu
+                bosu += 2 * bafu
+            }
+
+            else if (rand <= 99) {
+                document.getElementById(gstr).value = "訓練券\n×" + 2 * bafu
+                kun += 2 * bafu
+            }
+
+        }
+    }
+
+    //aba
+    function type4() {
+
+        if (kakukai == 1) {
+
+            if (ch_ken2.checked == true) {
+                document.getElementById(gstr).value = "絆\n×" + kakuki * 2
+                curki += kakuki * 2
+                ken2 -= 1
+            }
+
+            else {
+                document.getElementById(gstr).value = "絆\n×" + kakuki
+                curki += kakuki
+            }
+
+            kakukai = 10
+        }
+
+        else {
+
+            kakukai -= 1;
+
+            rand = Math.floor(Math.random() * 100)
+
+            if (rand <= 7) {
+
+                if (kakuki == 12) {
+                    document.getElementById(gstr).value = "絆\n×" + 4
+                    curki += 4
+                }
+
+                else {
+                    document.getElementById(gstr).value = "絆\n×" + 2
+                    curki += 2
+                }
+            }
+
+            else if (rand <= 27) {
+                document.getElementById(gstr).value = "副訓練3\n×" + 3
+                kun3 += 3
+            }
+
+            else if (rand <= 47) {
+                document.getElementById(gstr).value = "強化石\n×" + 100
+                kyou += 100
+            }
+
+            else if (rand <= 62) {
+                document.getElementById(gstr).value = "宝石券\n×" + 20
+                hou += 20
+            }
+
+            else if (rand <= 72) {
+                document.getElementById(gstr).value = "副訓練4\n×" + 1
+                kun4 += 1
+            }
+
+            else if (rand <= 78) {
+                document.getElementById(gstr).value = "ボス券\n×" + 2
+                bosu += 2
+            }
+
+            else if (rand <= 85) {
+                document.getElementById(gstr).value = "訓練券\n×" + 2
+                kun += 2
+            }
+
+            else if (rand <= 93) {
+                document.getElementById(gstr).value = "紅翡翠\n×" + 1
+                beni += 1
+            }
+
+            else if (rand <= 97) {
+                document.getElementById(gstr).value = "MR割引\n×" + 1
+                ken1 = ken1 / 1 + 1
+                wari += 1
+            }
+
+            else if (rand <= 99) {
+                document.getElementById(gstr).value = "MR幸運\n×" + 1
+                ken2 = ken2 / 1 + 1
+                kou += 1
+            }
+        }
+    }
+
+    //others
+    function type5() {
+
+        //ken on
+        if (kenon.checked == true) {
+
+            if (kakukai == 1) {
+
+                if (ch_ken2.checked == true) {
+                    document.getElementById(gstr).value = "絆\n×" + kakuki * 2
+                    curki += kakuki * 2
+                    ken2 -= 1
+                }
+
+                else {
+                    document.getElementById(gstr).value = "絆\n×" + kakuki
+                    curki += kakuki
+                }
+
+                kakukai = 10
+            }
+
+            else {
+
+                kakukai -= 1;
+
+                rand = Math.floor(Math.random() * 100)
+
+                if (rand <= 7) {
+
+                    if (kakuki == 12) {
+                        document.getElementById(gstr).value = "絆\n×" + 4
+                        curki += 4
+                    }
+
+                    else {
+                        document.getElementById(gstr).value = "絆\n×" + 2
+                        curki += 2
+                    }
+                }
+
+                else {
+                    if (rand <= 93) {
+                        document.getElementById(gstr).value = "ハズレ"
+                        beni += 1
+                    }
+
+                    else if (rand <= 97) {
+                        document.getElementById(gstr).value = "割引券\n×" + 1
+                        ken1 = ken1 / 1 + 1
+                        wari += 1
+                    }
+
+                    else if (rand <= 99) {
+                        document.getElementById(gstr).value = "幸運券\n×" + 1
+                        ken2 = ken2 / 1 + 1
+                        kou += 1
+                    }
+                }
+            }
+        }
+
+        //ken off
+        else {
+            if (kakukai == 1) {
+                document.getElementById(gstr).value = "絆\n×" + kakuki * bafu
+                curki += kakuki * bafu
+                kakukai = 10
+
+                if (bafu == 2) {
+                    b52 += 1
+                }
+                else if (bafu == 5) {
+                    b55 += 1
+                }
+            }
+
+            else {
+                rand = Math.floor(Math.random() * 100)
+
+                if (rand <= 7) {
+
+                    if (kakuki == 12) {
+                        document.getElementById(gstr).value = "絆\n×" + 4 * bafu
+                        curki += 4 * bafu
+
+                    }
+
+                    else {
+                        document.getElementById(gstr).value = "絆\n×" + 2 * bafu
+                        curki += 2 * bafu
+                    }
+
+                    if (bafu == 2) {
+                        b22 += 1
+                    }
+                    else if (bafu == 5) {
+                        b25 += 1
+                    }
+                }
+
+                else {
+                    document.getElementById(gstr).value = "ハズレ";
+                }
+            }
+
+        }
+    }
+
+
+    //set next bafu
+    function changebafu() {
+
+        if (bafuon.checked == true) {
+
+            rand = Math.floor(Math.random() * 100)
+
+            bafu = 1
+
+            if (rand <= 1) {
+                bafu = 5
+                b5k += 1
+            }
+            else if (rand <= 16) {
+                bafu = 2
+                b2k += 1
+            }
+        }
+    }
+
+    //when start button is pushed
+    function start() {
+
+        valueset();
+        gacyaset();
+        gacyacheck();
+        displayvalue();
+        displaymeter();
+
+    }
+
+</script>
